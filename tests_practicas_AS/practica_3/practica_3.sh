@@ -51,7 +51,7 @@ agnadir_usuarios () {
 }
 
 borrar_usuario () {
-    uname=$1
+    uname="$1"
     
     home=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
 
@@ -75,10 +75,8 @@ borrar_usuarios () {
     #E
     while read uname
     do
-        #H
-        #L,M,K
-        uid_user=$(id -u "$uname" 2> /dev/null)
 
+        id -u "$uname" 2> /dev/null
         #I
         if [ $? -eq 0 ]
         then
