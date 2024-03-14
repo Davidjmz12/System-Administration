@@ -67,8 +67,8 @@ borrar_usuario () {
 }
 
 borrar_usuarios () {
-    OLDIF=$IFS
-    $IFS=","
+    OLDIF="$IFS"
+    IFS=","
 
     #Q
     mkdir -p "/extra/backup" 
@@ -89,7 +89,7 @@ borrar_usuarios () {
     done < $1
 
 
-    $IFS="$OLDIF"
+    IFS="$OLDIF"
 }
 
 
