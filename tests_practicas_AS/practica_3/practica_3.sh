@@ -11,13 +11,14 @@ agnadir_usuario () {
 
     if  [ $(getent group "$uname") ] 
     then
-        useradd -c "$name" "$uname" -m -g "$uname" -k UID_MIN=1815 > /dev/null 
+        useradd -c "$name" "$uname" -m -k -g "$uname" -K UID_MIN=1815 > /dev/null 
     else
-        useradd -c "$name" "$uname" -m -U -k UID_MIN=1815 > /dev/null
+        useradd -c "$name" "$uname" -m -k -U -K UID_MIN=1815 > /dev/null
     fi
 
     echo -e "$uname:$pswd" | chpasswd -c SHA256  > /dev/null 
 
+    #F
     passwd -x 30 "$uname" > /dev/null 
     echo "$name ha sido creado"
 }
@@ -50,15 +51,41 @@ agnadir_usuarios () {
     IFS="$OLDIF"
 }
 
+borrar_usuario () {
+    uname=$1
+    
+    home=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
+
+    #P
+    tar -cpf "/extra/backup/$uname.tar" "$home"
+
+    #R
+    if [ $! -eq 0 ]
+    then
+        userdel -r "$uname" > /dev/null
+    fi
+}
+
 borrar_usuarios () {
     OLDIF=$IFS
     $IFS=","
 
+    #Q
+    mkdir -p "/extra/backup" 
+
     #E
-    while read name
+    while read uname
     do
         #H
-        [ -z $name ] && echo "Campo invalido" && exit
+        #L,M,K
+        uid_user=$(id -u "$uname" 2> /dev/null)
+
+        #I
+        if [ $? -eq 0 ]
+        then
+            #Borrar usuario
+            borrar_usuario $uname
+        fi
     done < $1
 
 
@@ -67,7 +94,7 @@ borrar_usuarios () {
 
 
 #A
-[ $EUID -ne 0 ] && echo "Este script necesita privilegios de administracion" && exit
+[ $EUID -ne 0 ] && echo "Este script necesita privilegios de administracion" && exit 1
 
 #D
 [ $# -ne 2 ] && echo "Numero incorrecto de parametros" && exit
