@@ -61,7 +61,7 @@ borrar_usuario () {
     #R
     if [ $? -eq 0 ]
     then
-        userdel -r "$uname" > /dev/null
+        userdel -r "$uname" > /dev/null 2>&1
     fi
 }
 
