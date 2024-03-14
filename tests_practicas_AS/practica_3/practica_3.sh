@@ -32,7 +32,7 @@ agnadir_usuarios () {
         ( [ -z "$uname" ]  || [ -z "$pswd" ] || [ -z "$name" ] ) && echo "Campo invalido" && exit
 
         #L,M,K
-        uid_user=$(id -u "$uname" 2>) #/dev/null)
+        uid_user=$(id -u "$uname") #2>/dev/null)
 
         #G
         if [ $? -eq 0 ]
