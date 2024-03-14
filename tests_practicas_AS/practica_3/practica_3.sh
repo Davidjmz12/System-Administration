@@ -4,17 +4,22 @@
 
 
 agnadir_usuario () {
-    if  [ $(getent group "$1") ] 
+    
+    uname="$1"
+    pswd="$2"
+    name="$3"
+
+    if  [ $(getent group "$uname") ] 
     then
-        useradd -c "$1" "$2" -m -g "$1" -k UID_MIN=1815 > /dev/null 
+        useradd -c "$name" "$uname" -m -g "$uname" -k UID_MIN=1815 > /dev/null 
     else
-        useradd -c "$1" "$2" -m -U -k UID_MIN=1815 > /dev/null
+        useradd -c "$name" "$uname" -m -U -k UID_MIN=1815 > /dev/null
     fi
 
-    echo -e "$1:$3" | chpasswd -c SHA256  > /dev/null 
+    echo -e "$uname:$pswd" | chpasswd -c SHA256  > /dev/null 
 
-    passwd -x 30 "$1" > /dev/null 
-    echo "$2 ha sido creado"
+    passwd -x 30 "$uname" > /dev/null 
+    echo "$name ha sido creado"
 }
 
 agnadir_usuarios () {
@@ -35,7 +40,7 @@ agnadir_usuarios () {
             echo "El usuario $uid_user ya existe"
         else
             #Crear usuaro
-            agnadir_usuario $uname $name $pswd
+            agnadir_usuario $uname $pswd $name
 
         fi
 
