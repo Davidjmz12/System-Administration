@@ -40,11 +40,11 @@ agnadir_usuarios () {
             echo "El usuario $uname ya existe"
         else
             #Crear usuaro
-            agnadir_usuario $uname $pswd $name
+            agnadir_usuario "$uname" "$pswd" "$name"
 
         fi
 
-    done < $1
+    done < "$1"
 
 
     IFS="$OLDIF"
@@ -81,9 +81,9 @@ borrar_usuarios () {
         if [ $? -eq 0 ]
         then
             #Borrar usuario
-            borrar_usuario $uname
+            borrar_usuario "$uname"
         fi
-    done < $1
+    done < "$1"
 
 
     IFS="$OLDIF"
