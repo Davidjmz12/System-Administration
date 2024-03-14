@@ -11,14 +11,14 @@ agnadir_usuario () {
 
     if  [ $(getent group "$uname") ] 
     then
-        useradd -c "$name" "$uname" -m -g "$uname" -k UID_MIN=1815 > /dev/null 
+        useradd -c "$name" "$uname" -m -g "$uname" -k UID_MIN=1815 #> /dev/null 
     else
-        useradd -c "$name" "$uname" -m -U -k UID_MIN=1815 > /dev/null
+        useradd -c "$name" "$uname" -m -U -k UID_MIN=1815 #> /dev/null
     fi
 
-    echo -e "$uname:$pswd" | chpasswd -c SHA256  > /dev/null 
+    echo -e "$uname:$pswd" | chpasswd -c SHA256  #> /dev/null 
 
-    passwd -x 30 "$uname" > /dev/null 
+    passwd -x 30 "$uname" #> /dev/null 
     echo "$name ha sido creado"
 }
 
@@ -32,7 +32,7 @@ agnadir_usuarios () {
         ( [ -z "$uname" ]  || [ -z "$pswd" ] || [ -z "$name" ] ) && echo "Campo invalido" && exit
 
         #L,M,K
-        uid_user=$(id -u "$uname" 2> /dev/null)
+        uid_user=$(id -u "$uname" 2>) #/dev/null)
 
         #G
         if [ $? -eq 0 ]
