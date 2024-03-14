@@ -67,7 +67,7 @@ borrar_usuarios () {
 
 
 #A
-[ $EUID -eq 0 ] && echo "Este script necesita privilegios de administracion" && exit
+[ $EUID -ne 0 ] && echo "Este script necesita privilegios de administracion" && exit
 
 #D
 [ $# -ne 2 ] && echo "Numero incorrecto de parametros" && exit
