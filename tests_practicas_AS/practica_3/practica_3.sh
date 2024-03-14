@@ -33,12 +33,11 @@ agnadir_usuarios () {
         ( [ -z "$uname" ]  || [ -z "$pswd" ] || [ -z "$name" ] ) && echo "Campo invalido" && exit
 
         #L,M,K
-        uid_user=$(id -u "$uname" 2> /dev/null)
-
+        id -u "$uname" 2> /dev/null
         #G
         if [ $? -eq 0 ]
         then
-            echo "El usuario $uid_user ya existe"
+            echo "El usuario $uname ya existe"
         else
             #Crear usuaro
             agnadir_usuario $uname $pswd $name
