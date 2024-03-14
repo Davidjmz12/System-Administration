@@ -56,7 +56,7 @@ borrar_usuario () {
     home_us=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
 
     #P
-    tar -cpf "/extra/backup/$uname.tar" "$home_us"
+    tar -cpf "/extra/backup/$uname.tar" "$home_us" 1> /dev/null 2>&1 
 
     #R
     if [ $? -eq 0 ]
