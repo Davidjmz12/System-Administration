@@ -53,13 +53,13 @@ agnadir_usuarios () {
 borrar_usuario () {
     uname="$1"
     
-    home=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
+    home_us=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
 
     #P
-    tar -cpf "/extra/backup/$uname.tar" "$home"
+    tar -cpf "/extra/backup/$uname.tar" "$home_us"
 
     #R
-    if [ $! -eq 0 ]
+    if [ $? -eq 0 ]
     then
         userdel -r "$uname" > /dev/null
     fi
