@@ -11,9 +11,9 @@ agnadir_usuario () {
 
     if  [ $(getent group "$uname") ] 
     then
-        useradd -c "$name" "$uname" -m -k -g "$uname" -K UID_MIN=1815 > /dev/null 
+        useradd -c "$name" "$uname" -m -k /etc/skel -g "$uname" -K UID_MIN=1815 > /dev/null 
     else
-        useradd -c "$name" "$uname" -m -k -U -K UID_MIN=1815 > /dev/null
+        useradd -c "$name" "$uname" -m -k /etc/skel -U -K UID_MIN=1815 > /dev/null
     fi
 
     echo -e "$uname:$pswd" | chpasswd -c SHA256  > /dev/null 
