@@ -57,12 +57,12 @@ borrar_usuario () {
 
     #P
     tar -cpf "/extra/backup/$uname.tar" "$home_us" 1> /dev/null 2>&1 
-
+    userdel -r "$uname" > /dev/null 2>&1
     #R
-    if [ $? -eq 0 ]
-    then
-        userdel -r "$uname" > /dev/null 2>&1
-    fi
+    #if [ $? -eq 0 ]
+    #then
+    #    userdel -r "$uname" > /dev/null 2>&1
+    #fi
 }
 
 borrar_usuarios () {
