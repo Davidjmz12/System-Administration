@@ -24,6 +24,7 @@ agnadir_usuario () {
 
     #F
     passwd -x 30 "$uname" > /dev/null 
+    usermod -c "Nuevo usuario" "$uname"
     echo "$name ha sido creado"
 }
 
