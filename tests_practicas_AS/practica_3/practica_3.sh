@@ -55,18 +55,15 @@ agnadir_usuarios () {
 
 borrar_usuario () {
     uname="$1"
-    echo "$1"
     
-    home_us=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
-    echo "$home_us"
+    home_us=$(cat /etc/passwd | egrep "$uname:" | cut -d ":" -f6)
     
     #P
-    tar -cpf "/extra/backup/$uname.tar" "$home_us" 1> /dev/null 2>&1 
+    tar -Pcpf "/extra/backup/$uname.tar" "$home_us" 1> /dev/null 2>&1 
     
     #R
     if [ $? -eq 0 ]
     then
-        echo "entro2"
         userdel -r "$uname"
     fi
 }
@@ -82,11 +79,9 @@ borrar_usuarios () {
     while read uname
     do
         #I
-        echo "hola $uname"
         id -u "$uname" > /dev/null 2>&1
         if [ $? -eq 0 ]
         then
-            echo "entro"
             #Borrar usuario
             borrar_usuario "$uname"
         fi
