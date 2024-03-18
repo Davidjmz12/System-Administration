@@ -61,7 +61,7 @@ borrar_usuario () {
     home_us=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
 
     #P
-    tar -cpf "/extra/backup/$uname.tar" "$home_us" 1> /dev/null 2>&1 
+    tar -cpf /extra/backup/"$uname".tar "$home_us" 1> /dev/null 2>&1 
     
     #R
     if [ $? -eq 0 ]
@@ -75,25 +75,29 @@ borrar_usuarios () {
     IFS=","
 
     #Q
-    mkdir -p "/extra/backup" 
+    mkdir -p /extra/backup
 
     #E
-    while read uname
-    do
-
-        id -u "$uname" 2> /dev/null
-        #I
-        if [ $? -eq 0 ]
-        then
-            #Borrar usuario
-            borrar_usuario "$uname"
+    while read -r line  #leemos cada línea del fichero
+	do
+        #leemos cada uno de los campos de la línea (pueden ser o no vacíos)
+		read -ra campos <<< "$line"
+		uname="${campos[0]}"
+		if [ -n "$uname" ] #Comprobamos que no es vacío
+		then
+            id -u "$uname" 2> /dev/null
+            #I
+            if [ $? -eq 0 ]
+            then
+                #Borrar usuario
+                borrar_usuario "$uname"
+            fi
         fi
     done < "$1"
 
 
     IFS="$OLDIF"
 }
-
 
 #A
 [ $EUID -ne 0 ] && echo "Este script necesita privilegios de administracion" && exit 1
