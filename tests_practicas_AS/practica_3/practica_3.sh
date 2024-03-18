@@ -78,8 +78,10 @@ borrar_usuarios () {
     do
         id -u "$uname" 2> /dev/null
         #I
+        echo "hola"
         if [ $? -eq 0 ]
         then
+            echo "entro"
             #Borrar usuario
             borrar_usuario "$uname"
         fi
