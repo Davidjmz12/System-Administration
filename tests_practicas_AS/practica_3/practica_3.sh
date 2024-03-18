@@ -59,11 +59,16 @@ borrar_usuario () {
     
     home_us=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
 
+    
     #P
     tar -cpf "/extra/backup/$uname.tar" "$home_us" 1> /dev/null 2>&1 
     
     #R
-    userdel -r "$uname" > /dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        echo "entro2"
+        userdel -r "$uname"
+    fi
 }
 
 borrar_usuarios () {
@@ -76,9 +81,9 @@ borrar_usuarios () {
     #E
     while read uname
     do
-        id -u "$uname" 2> /dev/null
         #I
-        echo "hola"
+        echo "hola $uname"
+        id -u "$uname" 2> /dev/null
         if [ $? -eq 0 ]
         then
             echo "entro"
