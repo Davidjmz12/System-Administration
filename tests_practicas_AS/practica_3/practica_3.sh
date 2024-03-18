@@ -58,7 +58,7 @@ borrar_usuario () {
     echo "$1"
     
     home_us=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
-
+    echo "$home_us"
     
     #P
     tar -cpf "/extra/backup/$uname.tar" "$home_us" 1> /dev/null 2>&1 
@@ -83,7 +83,7 @@ borrar_usuarios () {
     do
         #I
         echo "hola $uname"
-        id -u "$uname" 2> /dev/null
+        id -u "$uname" > /dev/null 2>&1
         if [ $? -eq 0 ]
         then
             echo "entro"
