@@ -9,22 +9,20 @@ agnadir_usuario () {
     pswd="$2"
     name="$3"
 
-    # Si puede existir el grupo.
+    # Si puede existir ya un grupo con el mismo nombre...
     # if  [ $(getent group "$uname") ] 
     # then
     #     useradd -c "$name" "$uname" -m -k /etc/skel -g "$uname" -K UID_MIN=1815 > /dev/null 
     # else
     #     useradd -c "$name" "$uname" -m -k /etc/skel -U -K UID_MIN=1815 > /dev/null
     # fi
-    # usermod
     useradd -c "$name" "$uname" -m -k /etc/skel -U -K UID_MIN=1815 > /dev/null
-
+    usermod -g "Nuevo usuario" "$uname"
 
     echo -e "$uname:$pswd" | chpasswd -c SHA256  > /dev/null 
 
     #F
     passwd -x 30 "$uname" > /dev/null 
-    usermod -c "Nuevo usuario" "$uname"
     echo "$name ha sido creado"
 }
 
@@ -57,16 +55,19 @@ agnadir_usuarios () {
 
 borrar_usuario () {
     uname="$1"
+    echo "$1"
     
     home_us=$(cat /etc/passwd | grep "$uname:" | cut -d ":" -f6)
-
+    echo "$home_us"
+    
     #P
     tar -cpf /extra/backup/"$uname".tar "$home_us" 1> /dev/null 2>&1 
     
     #R
     if [ $? -eq 0 ]
     then
-        userdel -r "$uname" > /dev/null 2>&1
+        echo "entro2"
+        userdel -r "$uname"
     fi
 }
 
