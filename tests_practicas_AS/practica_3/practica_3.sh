@@ -76,7 +76,7 @@ borrar_usuarios () {
     mkdir -p /extra/backup
 
     #E
-    while read uname pswd name  #leemos cada línea del fichero
+    while read uname dummy1 dummy2  #leemos cada línea del fichero
 	do
 		if [ -n "$uname" ] #Comprobamos que no es vacío
 		then
