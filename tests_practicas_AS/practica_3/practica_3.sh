@@ -76,11 +76,8 @@ borrar_usuarios () {
     mkdir -p /extra/backup
 
     #E
-    while read -r line  #leemos cada línea del fichero
+    while read uname pswd name  #leemos cada línea del fichero
 	do
-        #leemos cada uno de los campos de la línea (pueden ser o no vacíos)
-		read -ra campos <<< "$line"
-		uname="${campos[0]}"
 		if [ -n "$uname" ] #Comprobamos que no es vacío
 		then
             id -u "$uname" 1> /dev/null 2>&1
