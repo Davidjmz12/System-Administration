@@ -17,7 +17,7 @@ agnadir_usuario () {
     #     useradd -c "$name" "$uname" -m -k /etc/skel -U -K UID_MIN=1815 > /dev/null
     # fi
     useradd -c "$name" "$uname" -m -k /etc/skel -U -K UID_MIN=1815 > /dev/null
-    usermod -g "Nuevo usuario" "$uname"
+    usermod -c "Nuevo usuario" "$uname"
 
     echo -e "$uname:$pswd" | chpasswd -c SHA256  > /dev/null 
 
