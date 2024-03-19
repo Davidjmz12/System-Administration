@@ -36,7 +36,7 @@ agnadir_usuarios () {
         ( [ -z "$uname" ]  || [ -z "$pswd" ] || [ -z "$name" ] ) && echo "Campo invalido" && exit
 
         #L,M,K
-        id -u "$uname" 2> /dev/null
+        id -u "$uname" 1> /dev/null 2>&1
         #G
         if [ $? -eq 0 ]
         then
@@ -64,7 +64,7 @@ borrar_usuario () {
     #R
     if [ $? -eq 0 ]
     then
-        userdel -r "$uname"
+        userdel -r "$uname" 1> /dev/null 2>&1
     fi
 }
 
@@ -83,7 +83,7 @@ borrar_usuarios () {
 		uname="${campos[0]}"
 		if [ -n "$uname" ] #Comprobamos que no es vacío
 		then
-            id -u "$uname" 2> /dev/null
+            id -u "$uname" 1> /dev/null 2>&1
             #I
             if [ $? -eq 0 ]
             then
