@@ -11,6 +11,10 @@ date: today
 
 En la presente memoria se explica cómo se realizó la Práctica 3 de la asignatura **Administración de Sistemas**. En esta se presenta un script `practica_3.sh` que permite añadir y/o eliminar usuarios de un sistema linux.
 
+Los autores de esta práctica son:
+- Carlos Giralt Fuixench - 831274
+- David Jiménez Omeñaca - 825068
+
 ## Uso
 
 Para añadir usuarios se usa el flag `-a`:
