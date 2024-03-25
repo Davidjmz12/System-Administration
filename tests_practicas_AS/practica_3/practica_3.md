@@ -1,9 +1,3 @@
----
-title: Práctica 3 - Administración de Sistemas
-author: David Jiménez Omeñaca (825068), Carlos Giralt Fuixench (831274)
-date: 20-3-24
----
-
 # Memoria Práctica 3
 
 ## Introducción
@@ -64,6 +58,14 @@ Nótese que para evitar que se muestren las salidas de ciertos comandos por pant
 ```bash
 command 1>/dev/null 2>&1
 ```
+
+Con tal de permitir que el usuario **as** pueda ejecutar el comando `sudo` sin necesidad de introducir su contraseña, basta modificar el fichero `/etc/sudoers` mediante el uso del comando `visudo`, que requiere de permisos de administrador. La modificación consiste en añadir la siguiente línea:
+
+```bash
+as   ALL=(ALL) NOPASSWD:ALL
+```
+
+
 
 ### Script principal
 
