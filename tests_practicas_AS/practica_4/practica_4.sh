@@ -1,0 +1,6 @@
+#!/bin/bash
+#825068, Jimenez, David, T, 1, A
+#831274, Giralt, Carlos, T, 1, A
+
+
+# FICHERO PARA CONEXIÓN A MÁQUINAS Y CREACIÓN/ELIMINACIÓN DE USUARIOS
