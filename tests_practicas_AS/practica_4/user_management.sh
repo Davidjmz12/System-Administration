@@ -93,19 +93,10 @@ borrar_usuarios () {
     IFS="$OLDIF"
 }
 
-#A
-[ $EUID -ne 0 ] && echo "Este script necesita privilegios de administracion" && exit 1
-
-#D
-[ $# -ne 2 ] && echo "Numero incorrecto de parametros" && exit
-
-#C
-[ "$1" != "-a" ] && [ "$1" != "-s" ] && >&2 echo "Opcion invalida" && exit
-
 
 if [ $1 = "-a" ]
 then
-    agnadir_usuarios $2
+    agnadir_usuarios "$2"
 else
-    borrar_usuarios $2
+    borrar_usuarios "$2"
 fi
