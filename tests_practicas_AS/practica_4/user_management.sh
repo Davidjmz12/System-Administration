@@ -16,7 +16,7 @@ agnadir_usuario () {
     #     useradd -c "$name" "$uname" -m -k /etc/skel -U -K UID_MIN=1815 > /dev/null
     # fi
     useradd -c "$name" "$uname" -m -k /etc/skel -U -K UID_MIN=1815 > /dev/null
-    usermod -c "Nuevo usuario" "$uname"
+    usermod -c "$name" "$uname" 1> /dev/null 2>&1
 
     echo -e "$uname:$pswd" | chpasswd -c SHA256  > /dev/null 
 
@@ -93,6 +93,13 @@ borrar_usuarios () {
     IFS="$OLDIF"
 }
 
+[ $UID -ne 0 ] && echo "Este script necesita privilegios de administracion" && exit 1
+
+#D
+[ $# -ne 2 ] && echo "Numero incorrecto de parametros" && exit
+
+#C
+[ "$1" != "-a" ] && [ "$1" != "-s" ] && >&2 echo "Opcion invalida" && exit
 
 if [ $1 = "-a" ]
 then
