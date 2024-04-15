@@ -23,4 +23,35 @@ addres 192.168.56.11
 netmask 255.255.255.0
 ```
 
+Reiniciamos el servicio de red:
+
+```bash
+systemctl restart networking.service
+```
+
+y comprobamos que se conecta a las dos interfaces con
+
+```bash
+ip addr | egrep 'enp0s3.*UP'
+ip addr | egrep 'enp0s8.*UP'
+```
+
+Para instalar el servido ssh usamos:
+
+```bash
+apt install openssh-server
+```
+
+Para configurar que root no se pueda conectar en remoto añadimos en `/etc/ssh/sshd_config` :
+
+```bash
+PermitRootLogin no
+```
+y reiniciamos el servicio sshd con 
+```bash
+sudo systemctl restart sshd
+```
+
+
+
 
