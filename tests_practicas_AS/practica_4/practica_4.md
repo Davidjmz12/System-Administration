@@ -70,6 +70,11 @@ ssh-copy-key -i ~/.ssh/id_as_ed25519 as@192.168.56.12
 
 Para comprobar que la configuración ha sido un éxito, ejecutamos `ssh as@192.168.56.11` y verificamos que se accede sin pedir contraseña. Ídem para la otra máquina.
 
+## Esquema de la red
+A continuación, se muestra un esquema de la topología de red implementada:
+![descripción de la red](red.png)
+
+
 ## Script principal
 A fin de reutilizar el script de la práctica anterior, procedemos de la siguiente manera:
 1. Creamos un script, *user_management.sh*, que contiene el script de la práctica anterior
