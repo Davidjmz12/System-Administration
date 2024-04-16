@@ -79,7 +79,7 @@ A continuación, se muestra un esquema de la topología de red implementada:
 A fin de reutilizar el script de la práctica anterior, procedemos de la siguiente manera:
 1. Creamos un script, *user_management.sh*, que contiene el script de la práctica anterior
 2. En el script *practica_4.sh* se llevan a cabo las siguientes tareas:
-  1. Por cada ip del fichero, comprobamos que la máquina es alcanzable con el comando `ping`, indicando un único `ECHO_REQUEST` y un timeout de 1 segundo.
+  1. Por cada ip del fichero, comprobamos que la máquina es alcanzable con el comando `ping`, indicando un único `ECHO_REQUEST` y un timeout de 2 segundos.
   2. Si lo es, copiamos, mediante `scp`, el script *user_management.sh* y el fichero que contiene la lista de usuarios en la máquina remota.
   3. Ejecutamos remotamente dicho script usando `ssh -n` con los parámetros oportunos.
   4. Borramos los ficheros.
