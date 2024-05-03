@@ -37,7 +37,7 @@ El fichero `etc/hosts` de esa misma máquina debe quedar como sigue:
 
 Repetimos lo anterior con todas las máquinas. 
 
-Pasamos, ahora, a configurar las interfaces de red de cada máquina. Empezamos por Debian1. Para ello, debemos modificar el fichero `/etc/network/interfaces`. Debe quedar tal que así:
+Pasamos, ahora, a configurar las interfaces de red de cada máquina. Empezamos por debian1. Para ello, debemos modificar el fichero `/etc/network/interfaces`. Debe quedar tal que así:
 ```bash
 # NAT
 allow-hotplug enp0s3
@@ -62,3 +62,23 @@ address 192.168.59.1
 netmask 255.255.255.0
 ```
 
+Para la máquina debian2 debe quedar tal que así:
+```bash
+auto enp0s3
+iface enp0s3 inet static
+address 192.168.58.2
+netmask 255.255.255.0
+up ip route add 192.168.59.0/24 via 192.168.58.1 dev enp0s3
+up ip route add 192.168.60.0/24 via 192.168.58.1 dev enp0s3
+up ip route add 192.168.57.0/24 via 192.168.58.1 dev enp0s3
+```
+
+Tras modificar los ficheros `/etc/network/interfaces` de cada máquina, usamos el comando:
+```bash
+systemctl restart networking.service
+```
+para que los cambios tengan efecto, y el comando 
+```bash
+ip addr
+```
+para comprobar que las máquinas se conectan a todos sus interfaces de red. 
