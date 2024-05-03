@@ -36,3 +36,29 @@ El fichero `etc/hosts` de esa misma máquina debe quedar como sigue:
 ```
 
 Repetimos lo anterior con todas las máquinas. 
+
+Pasamos, ahora, a configurar las interfaces de red de cada máquina. Empezamos por Debian1. Para ello, debemos modificar el fichero `/etc/network/interfaces`. Debe quedar tal que así:
+```bash
+# NAT
+allow-hotplug enp0s3
+iface enp0s3 inet dhcp
+
+# Host-Only Network
+auto enp0s8
+iface enp0s8 inet static
+address 192.168.57.1
+netmask 255.255.255.0
+
+# Internal network 1
+auto enp0s9
+iface enp0s9 inet static
+address 192.168.58.1
+netmask 255.255.255.0
+
+# Internal network 2
+auto enp0s10
+iface enp0s10 inet static
+address 192.168.59.1
+netmask 255.255.255.0
+```
+
