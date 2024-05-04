@@ -34,20 +34,9 @@ Repetimos lo anterior con todas las máquinas.
 
 ## Configuración de red
 
-A continuación, para cada máquina, vamos habilitan los adaptadores de red necesarios, según el esquema del enunciado: 
-- **debian1** : Necesitamos un adaptador conectado a NAT (viene por defecto), un adaptador conectado a una Host-Only-Network (creamos una nueva para no usar la red de la práctica anterior), uno conectado a una red interna (yo le he dado nombre intnet1) y otro conectado a una red interna (intnet2, por ejemplo).
-- **debian2**: No tiene adaptador tipo NAT, sólo tiene un adaptador a red interna. Concretamente, a intnet1.
-- **debian3**: Sólo tiene un adaptador a red interna. Concretamente, a intnet2.
-- **debian4**: sólo tiene un adaptador a red interna. Concretamente, a intnet2.
-- **debian5**: Sólo tiene un adaptador a red interna. Concretamente, a intnet3 (nueva).
-- **debian6**: Sólo tiene dos adaptadores a redes internas. Concretamente, a intnet2 e intnet3. 
+La configuración de red se puede ver en la siguiente imagen:
 
-Detallamos a continuación la especificación de las redes:
-- La red **HostNetwork2** tiene IP 192.168.57.0 y tine el servidor DHCP desactivado.
-- La red interna **intnet1** tiene IP 192.168.58.0.
-- La red interna **intnet2** tiene IP 192.168.59.0.
-- La red interna **intnet3** tiene IP 192.168.60.0.
-Todas las redes tienen máscara de red 255.255.255.0.
+![red](red.png)
 
 Para especificar esta estructura de red vamos a modificar el fichero `/etc/network/interfaces` (se especificará más adelante cómo). 
 Tras modificar los ficheros `/etc/network/interfaces` de cada máquina, usamos el comando:
