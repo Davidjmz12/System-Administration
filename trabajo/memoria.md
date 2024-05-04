@@ -107,7 +107,17 @@ up ip route add default via 192.168.60.6 dev enp0s3
 ### Debian6
 
 ```bash
+auto enp0s3
+iface enp0s3 inet static
+address 192.168.59.6
+netmask 255.255.255.0
 
+auto enp0s8
+iface enp0s8 inet static
+address 192.168.60.6
+netmask 255.255.255.0
+
+up ip route add default via 192.168.59.1
 ```
 
 # Servidor DHCP
@@ -118,8 +128,27 @@ Instalamos en **debian1** el servidor DHCP usando:
 sudo apt-get install isc-dhcp-server
 ```
 
+Ahora añadirmos en el fichero de configuración `/etc/dhcp/dhcpd.conf` la configuración del servidor:
+
+```
+subnet 192.168..0 netmask 255.255.255.0 {
+ range 192.168.1.150 192.168.1.200;
+ option routers 192.168.1.254;
+ option domain-name-servers 192.168.1.1, 192.168.1.2;
+ option domain-name "mydomain.example";
+}
+```
+
 # Router
 
+Tenemos que activar el ip_forwarding de la máquina **debian1** y **debian6** para que puedan reexpedir paquetes. Para ello escribimos en el fichero `/etc/sysctl.conf` la siguiente linea:
+`` 
+net.ipv4.ip_forward=1
+`` 
+Por último tenemos que hacer permanentes los cambios con la instrucción 
+```
+sudo sysctl -p /etc/sysctl.conf
+```
 
 # Cortafuegos
 
