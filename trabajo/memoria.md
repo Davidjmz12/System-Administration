@@ -90,15 +90,47 @@ netmask 255.255.255.0
 
 ### Debian2
 
-Para la máquina debian2 debe quedar tal que así:
 ```bash
 auto enp0s3
 iface enp0s3 inet static
 address 192.168.58.2
 netmask 255.255.255.0
-up ip route add 192.168.59.0/24 via 192.168.58.1 dev enp0s3
-up ip route add 192.168.60.0/24 via 192.168.58.1 dev enp0s3
-up ip route add 192.168.57.0/24 via 192.168.58.1 dev enp0s3
+up ip route default via 192.168.58.1 dev enp0s3
 ```
 
+### Debian3-4
+
+```bash
+auto enp0s3
+iface enp0s3 inet dhcp
+up ip route add 192.168.60.0/24 via 192.168.59.6 dev enp0s3
+up ip route add default via 192.168.59.1 dev enp0s3
+```
+
+### Debian5
+
+```bash
+auto enp0s3
+iface enp0s3 inet static
+up ip route add default via 192.168.60.6 dev enp0s3
+```
+
+### Debian6
+
+```bash
+
+```
+
+# Servidor DHCP
+
+Instalamos en **debian1** el servidor DHCP usando:
+
+```
+sudo apt-get install isc-dhcp-server
+```
+
+# Router
+
+
+# Cortafuegos
 
