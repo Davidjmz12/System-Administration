@@ -127,13 +127,13 @@ up ip route add default via 192.168.59.1
 
 Instalamos en **debian1** el servidor DHCP usando:
 
-```
+```bash
 sudo apt-get install isc-dhcp-server
 ```
 
 Ahora añadirmos en el fichero de configuración `/etc/dhcp/dhcpd.conf` la configuración del servidor:
 
-```
+```bash
 subnet 192.168.59.0 netmask 255.255.255.0 {
  range 192.168.59.3 192.168.59.9;
  option routers 192.168.59.1;
@@ -146,48 +146,48 @@ Es importante aumentar el tiempo de expiración de las direcciones dinámicas mo
 # Router
 
 Tenemos que activar el ip_forwarding de la máquina **debian1** y **debian6** para que puedan reexpedir paquetes. Para ello escribimos en el fichero `/etc/sysctl.conf` la siguiente linea:
-`` 
+```bash 
 net.ipv4.ip_forward=1
-`` 
+``` 
 Por último tenemos que hacer permanentes los cambios con la instrucción 
-```
+```bash
 sudo sysctl -p /etc/sysctl.conf
 ```
 
 # Servidor Web
 
 Primero instalamos el servidor web apache en **debian2** con 
-``
+```bash
 sudo apt update
 sudo apt install apache2
-`` 
+``` 
 Para modificar el fichero `html` modificamos el fichero `/var/www/html/index.html`. El servidor se arranca con la máquina automáticamente
 
 # Servidor SSH
 
 Primero instalamos el servidor ssh **debian5** con
 
-`` 
+```bash 
 sudo apt install openssh-server
-`` 
+```
 y modificamos el fichero de configuración `/etc/ssh/sshd_config` añadiendo las lineas:
 
-``
+```bash
 PermitRootLogin no
 RhostsAuthentication no
 RhostsRSAAuthentication no
 RSAAuthentication yes
 PasswordAuthentication yes
-``
+```
 
 El servidor se arranca automáticamente con la máquina.
 
 # Cortafuegos
 Escribimos a continuación las instrucciones de firewall necesarias:
 
-``bash
-# TABLA FILTER
+```bash
 
+# TABLA FILTER
 # Inicializamos la tabla rechanzado por defecto todo input y forward
 iptables -F 
 iptables -P INPUT DROP
@@ -220,10 +220,11 @@ iptables -t nat -A POSTROUTING -o enp0s3 -j SNAT --to-source 192.168.57.2
 iptables -t nat -A PREROUTING -i enp0s8 -p tcp --dport 80 -j DNAT --to 192.168.58.2
 # Cambiar destino de conexiones al servidor ssh debian5
 iptables -t nat -A PREROUTING -i enp0s8 -p tcp --dport 22 -j DNAT --to 192.168.60.5
-`` 
+
+``` 
 
  Para que los cambios sean persistentes, instalamos `iptables-persistent` y después, guardamos la configuración con el siguiente comando en **root** (una vez ejecutado el script del cortafuefos):
 
- ``
+```bash
 iptables-save > /etc/iptables/rules.v4
- ``
+```
