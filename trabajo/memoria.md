@@ -36,7 +36,7 @@ Repetimos lo anterior con todas las máquinas.
 
 La configuración de red se puede ver en la siguiente imagen:
 
-![red](red.png)
+![red](network.png)
 
 Para especificar esta estructura de red vamos a modificar el fichero `/etc/network/interfaces` (se especificará más adelante cómo). 
 Tras modificar los ficheros `/etc/network/interfaces` de cada máquina, usamos el comando:
@@ -183,6 +183,44 @@ PasswordAuthentication yes
 El servidor se arranca automáticamente con la máquina.
 
 # Cortafuegos
+Escribimos a continuación las instrucciones de firewall necesarias:
+
+``bash
+# TABLA FILTER
+
+# Inicializamos la tabla rechanzado por defecto todo input y forward
+iptables -F 
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+# Permitimos tráfico desde intranet a extranet (y/o intranet)
+iptables -A FORWARD -i enp0s9 -j ACCEPT
+iptables -A FORWARD -i enp0s10 -j ACCEPT
+## Para que se pueda conectar con debian1
+iptables -A INPUT -i enp0s9 -j ACCEPT
+iptables -A INPUT -i enp0s10 -j ACCEPT
+## Permitir pings desde host
+iptables -A INPUT -i enp0s8 -p icmp -j ACCEPT
+## Permitir loop-back
+iptables -A INPUT -i lo -d 127.0.0.1 -j ACCEPT
+## Permitir conexiones ssh y http
+iptables -A FORWARD -d 192.168.58.2 -p tcp --dport 80 -j ACCEPT # HTTP
+iptables -A FORWARD -d 192.168.58.2 -p tcp --dport 22 -j ACCEPT # SSH
+## Respuestas de ping de extranet
+iptables -A INPUT -i enp0s3 -p icmp -j ACCEPT # A debian1
+iptables -A FORWARD -i enp0s3 -p icmp -j ACCEPT # A otro debian
+
+# TABLA NAT
+
+# Inicializamos la tabla
+iptables -t nat -F
+# Cambiar IP origen de tráfico extranet a intranet a IP pública de firewall. 
+iptables -t nat -A POSTROUTING -o enp0s3 -j SNAT --to-source 192.168.57.2
+# Cambiar destino de conexiones al servidor web debian2
+iptables -t nat -A PREROUTING -i enp0s8 -p tcp --dport 80 -j DNAT --to 192.168.58.2
+# Cambiar destino de conexiones al servidor ssh debian5
+iptables -t nat -A PREROUTING -i enp0s8 -p tcp --dport 22 -j DNAT --to 192.168.60.5
+`` 
 
  Para que los cambios sean persistentes, instalamos `iptables-persistent` y después, guardamos la configuración con el siguiente comando en **root** (una vez ejecutado el script del cortafuefos):
 
