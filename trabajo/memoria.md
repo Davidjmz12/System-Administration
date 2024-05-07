@@ -166,10 +166,12 @@ Para modificar el fichero `html` modificamos el fichero `/var/www/html/index.htm
 # Servidor SSH
 
 Primero instalamos el servidor ssh **debian5** con
+
 `` 
 sudo apt install openssh-server
 `` 
 y modificamos el fichero de configuración `/etc/ssh/sshd_config` añadiendo las lineas:
+
 ``
 PermitRootLogin no
 RhostsAuthentication no
@@ -182,3 +184,8 @@ El servidor se arranca automáticamente con la máquina.
 
 # Cortafuegos
 
+ Para que los cambios sean persistentes, instalamos `iptables-persistent` y después, guardamos la configuración con el siguiente comando en **root** (una vez ejecutado el script del cortafuefos):
+
+ ``
+iptables-save > /etc/iptables/rules.v4
+ ``
