@@ -75,6 +75,9 @@ auto enp0s10
 iface enp0s10 inet static
 address 192.168.59.1
 netmask 255.255.255.0
+
+up ip route add 192.168.60/24 via 192.168.59.6 dev enp0s10
+up ip route add default via 192.168.57.1 dev enp0s8
 ```
 
 ### Debian2
@@ -131,13 +134,14 @@ sudo apt-get install isc-dhcp-server
 Ahora añadirmos en el fichero de configuración `/etc/dhcp/dhcpd.conf` la configuración del servidor:
 
 ```
-subnet 192.168..0 netmask 255.255.255.0 {
- range 192.168.1.150 192.168.1.200;
- option routers 192.168.1.254;
- option domain-name-servers 192.168.1.1, 192.168.1.2;
- option domain-name "mydomain.example";
+subnet 192.168.59.0 netmask 255.255.255.0 {
+ range 192.168.59.3 192.168.59.9;
+ option routers 192.168.59.1;
+ option domain-name-servers 10.0.2.3, 192.14.7.9;
+ option domain-name "carlos.org";
 }
 ```
+Es importante aumentar el tiempo de expiración de las direcciones dinámicas modificando el valor de `default-lease-time` a por ejemplo `7200` segundos, es decir, dos horas.
 
 # Router
 
@@ -149,6 +153,32 @@ Por último tenemos que hacer permanentes los cambios con la instrucción
 ```
 sudo sysctl -p /etc/sysctl.conf
 ```
+
+# Servidor Web
+
+Primero instalamos el servidor web apache en **debian2** con 
+``
+sudo apt update
+sudo apt install apache2
+`` 
+Para modificar el fichero `html` modificamos el fichero `/var/www/html/index.html`. El servidor se arranca con la máquina automáticamente
+
+# Servidor SSH
+
+Primero instalamos el servidor ssh **debian5** con
+`` 
+sudo apt install openssh-server
+`` 
+y modificamos el fichero de configuración `/etc/ssh/sshd_config` añadiendo las lineas:
+``
+PermitRootLogin no
+RhostsAuthentication no
+RhostsRSAAuthentication no
+RSAAuthentication yes
+PasswordAuthentication yes
+``
+
+El servidor se arranca automáticamente con la máquina.
 
 # Cortafuegos
 
