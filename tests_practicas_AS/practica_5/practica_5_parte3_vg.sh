@@ -40,10 +40,10 @@ do
 
         echo "Montamos"
         # Montamos
-        mount -t "$tSF" "$device" >/dev/null 2>&1
+        mount -t "$tSF" "$device" "$dM" >/dev/null 2>&1
 
         # Buscamos para añadirlo en montado automático
-        UUID_device=$(lsblk -o NAME,UUID | egrep '$nVL' | awk '{print $2}')
+        UUID_device=$(lsblk -l -o NAME,UUID | egrep '$nGV-$nVL' | awk '{print $2}')
 
         echo "Escribimos en fstab para montaje automático..."
         echo "UUID=$UUID_device $dM $tSF errors=remount-ro 0 2" | tee /etc/fstab 
