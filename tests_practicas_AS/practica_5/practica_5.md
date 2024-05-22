@@ -7,7 +7,7 @@ Vamos a trabajar con las máquinas de la práctica anterior. En ellas, instalamo
 
 Para crear las particiones primero vemos el nombre de nuestro disco con `sudo fdisk -l` y luego ejecutamos:
 ```bash
-sudo parted /dev/sdb mklabel 
+sudo parted /dev/sdb
 ```
 Dentro de la interfaz, ejecutamos:
 ```bash
@@ -27,14 +27,10 @@ mount -t ext4 /dev/sdb2 /sdb2
 ```
 Ahora, para añadir la configuración automática, tenemos que extraer los UUIDs realizando el siguiente comando
 ```bash
-ls -l /dev/disk/by-uuid/ | egrep 'sdb' | cut -d '' -f 9 >> /etc/fstab
+lsblk -o NAME,UUID | egrep 'sdb' | sed '1d' | awk '{printf "UUID=%s errors=remount-ro 0 2\n",$2}' >> /etc/fstab
 ```
-y una vez ahí, les damos el siguiente formato
+y luego añadimos manualmente el tipo de sistema de ficheros y el punto de montaje, que en nuestro caso es `/sdb1` y `/sdb2`
 
-```bash
-UUID=<UUID/sdb1> /sdb1 ext3 errors=remount-ro 0 2
-UUID=<UUID/sdb2> /sdb2 ext4 errors=remount-ro 0 2
-```
 Reiniciamos la máquina y comprobamos que se han montado con `cat /etc/mtab`.
 
 ## Parte 2
@@ -43,11 +39,27 @@ Para el primer script, primero necesitamos acceso a ssh sin contraseña. Para el
 
 ## Parte 3
 
-Añadimos el disco de forma equivalente a la parte1. En este disco, creamos una partición completa de la misma manera, exceptoañadiendo el flag `vlm` usando el comando `set 1 lvm on`.
-No montamos el disco ni añadimos la configuración en `/etc/fstab`. Ahora creamos un grupo volumen que se llama `vg_p5` con el comando `vgcreate vg_p5 /dev/etc/1`. Ahora añadimos las particiones de la parte anterior con el script creado:
+Añadimos el disco de forma equivalente a la parte1. En este disco, creamos una partición completa de la misma manera, excepto añadiendo el flag `vlm` usando el comando `set 1 lvm on`.
+No montamos el disco ni añadimos la configuración en `/etc/fstab`. Ahora creamos un grupo volumen que se llama `vg_p5` con el comando `vgcreate vg_p5 /dev/sdc1`. Ahora añadimos las particiones de la parte anterior con el script creado:
 ```bash
 bash practica_5_parte3_lv.sh vg_p5 /dev/sdb1 /dev/sdb2
 ```
-Por lo tanto, estamos añadiendo dos volúmenes físicos.
+Por lo tanto, estamos añadiendo dos volúmenes físicos. En total este volumen grupo tiene 3 volúmenes físicos. Para comprobarlo podemos hacer `vgdisplay`.
+
+Ahora, usando el script `practica_5_parte3_vg.sh` le pasamos el fichero:
+
+```bash
+vg_p5,lv_p5,30MiB,ext3,/sdc1
+```
+
+para crear un volumen lógico llamado `lv_p5`. Luego volvemos a llamarlo cambiando el tamaño por `36MiB` para extenderlo. A continuación, se muestran capturas de pantalla de ejecutar `vscan` tras la creación y tras la extensión respectivamente. 
+
+Además comprobamos que se monta automáticamente al reiniciar la máquina comrobando el fichero `/etc/mtab`.
+
+
+![p1](capt3.png)
+
+
+![p2](capt4.png)
 
 
