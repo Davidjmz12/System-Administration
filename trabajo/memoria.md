@@ -228,3 +228,34 @@ iptables -t nat -A PREROUTING -i enp0s8 -p tcp --dport 22 -j DNAT --to 192.168.6
 ```bash
 iptables-save > /etc/iptables/rules.v4
 ```
+
+# Pruebas
+
+# Tabla de pruebas
+Se presenta la tabla de pruebas.
+
+
+Todas funcionan excepto la número 4. Inspeccionando con `iptraf` hemos visto que el paquete llega a a debian1 y se envía al host. Sin embargo, este no lo devuelve (no se detecta el tráfico incluso con el firewall desactivado). Creemos que tiene algo que ver con la configuración del host que es un ordenador privado mac. Ver
+
+![red](flujo.png)
+
+| Test a realizar             | Origen                | Destino               | Resultado obtenido |
+|-----------------------------|-----------------------|-----------------------|--------------------|
+| ping -c 1 -W 1 192.168.57.2 |   Host 192.168.57.1   | Debian 1 192.168.57.2 |     No responde    |
+| ping -c 1 -W 1 192.168.57.1 |        Debian 1       |          Host         |      Responde      |
+| ping -c 1 -W 1 192.168.60.5 | Debian 2 192.168.58.2 | Debian 5 192.168.60.5 |      Responde      |
+| ping -c 1 -W 1 192.168.57.2 |    Debian 3 dynamic   | Debian 1 192.168.57.2 |     No funciona    |
+|       ssh 192.168.57.2      |   Host 192.168.57.1   | Debian 1 192.168.57.2 |     SSSH login     |
+|     http://192.168.57.2     |   Host 192.168.57.1   | Debian 1 192.168.57.2 |    HTTP Response   |
+|      host www.unizar.es     |  Debian 3 192.168.57  |      Servidor DNS     |    166.210.11.37   |
+
+## Logs
+
+Hemos configurado los logs y hemos podido probar aquellos que no usasen forward, ya que hacemos drop de todo el input y por lo tanto, no se loggean los drops de forward, luego algunas pruebas no se ven reflejadas en los logs. Ponemos capturase de la primera, segunda. EL resto son forwads.
+
+![red](capt1.png)
+![red](capt2.png)
+
+Mostramos el contenido http:
+![red](pag.png)
+
