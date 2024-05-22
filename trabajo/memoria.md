@@ -61,7 +61,7 @@ iface enp0s3 inet dhcp
 # Host-Only Network
 auto enp0s8
 iface enp0s8 inet static
-address 192.168.57.1
+address 192.168.57.2
 netmask 255.255.255.0
 
 # Internal network 1
@@ -199,8 +199,8 @@ iptables -A FORWARD -i enp0s10 -j ACCEPT
 ## Para que se pueda conectar con debian1
 iptables -A INPUT -i enp0s9 -j ACCEPT
 iptables -A INPUT -i enp0s10 -j ACCEPT
-## Permitir pings desde host
-iptables -A INPUT -i enp0s8 -p icmp -j ACCEPT
+## Permitir pings desde host SOLO DE RESPUESTA
+iptables -A INPUT -i enp0s8 -p icmp --icmp-type 0 -j ACCEPT
 ## Permitir loop-back
 iptables -A INPUT -i lo -d 127.0.0.1 -j ACCEPT
 ## Permitir conexiones ssh y http
