@@ -4,7 +4,7 @@
 
 ## Creación de máquinas
 
-En primer lugar, importamos una nueva máquina (as_base_iptables.ova) y descargamos sudo en ella, dando privilegios de administración al usuario as. A continuación, liberamos el disco de dicha máquina y hacemos multiconexión. Para ello:
+En primer lugar, importamos una nueva máquina (as_base_iptables.ova) y descargamos sudo en ella, dando privilegios de administración al usuario as. A continuación, liberamos el disco de dicha máquina y lo hacemos multiconexión. Para ello:
 ```
 archivo -> Administrador de medios virtuales -> liberar
 ```
@@ -16,7 +16,7 @@ Nueva -> Usar un archivo de disco virtual existente.
 ```
 Seleccionamos el disco que hemos liberado y convertido a multiconexión y les asignamos nombres: debian1-debian6. 
 
-Una vez creadas, vamos a hacer es cambiar el nombre de las máquinas (lo que aparece en el prompt) para poder distinguirlas mejor. Esto se hace modificando los ficheros ```etc/hostname``` y ```etc/hosts```. Nótese que debe hacerse con permisos de administrador, pues son ficheros de sólo lectura. A modo de ejemplo, en el fichero `etc/hostname` de la máquina **debian1** escribimos la línea:
+Una vez creadas, vamos a cambiar el nombre de las máquinas (lo que aparece en el prompt) para poder distinguirlas mejor. Esto se hace modificando los ficheros ```etc/hostname``` y ```etc/hosts```. Nótese que debe hacerse con permisos de administrador, pues son ficheros de sólo lectura. A modo de ejemplo, en el fichero `etc/hostname` de la máquina **debian1** escribimos la línea:
 
 ```bash 
 debian1
@@ -34,7 +34,7 @@ Repetimos lo anterior con todas las máquinas.
 
 ## Configuración de red
 
-La configuración de red se puede ver en la siguiente imagen:
+La configuración de red se puede ver en la siguiente imagen y tabla:
 
 ![red](network.png)
 
@@ -90,7 +90,6 @@ address 192.168.59.1
 netmask 255.255.255.0
 
 up ip route add 192.168.60/24 via 192.168.59.6 dev enp0s10
-up ip route add default via 192.168.57.1 dev enp0s8
 ```
 
 ### Debian2
@@ -174,7 +173,7 @@ Primero instalamos el servidor web apache en **debian2** con
 sudo apt update
 sudo apt install apache2
 ``` 
-Para modificar el fichero `html` modificamos el fichero `/var/www/html/index.html`. El servidor se arranca con la máquina automáticamente
+Para modificar el fichero `html` modificamos el fichero `/var/www/html/index.html`. El servidor se arranca con la máquina automáticamente.
 
 # Servidor SSH
 
@@ -235,7 +234,6 @@ iptables -t nat -A PREROUTING -i enp0s8 -p tcp --dport 80 -j DNAT --to 192.168.5
 iptables -t nat -A PREROUTING -i enp0s8 -p tcp --dport 22 -j DNAT --to 192.168.60.5
 
 ``` 
-
  Para que los cambios sean persistentes, instalamos `iptables-persistent` y después, guardamos la configuración con el siguiente comando en **root** (una vez ejecutado el script del cortafuefos):
 
 ```bash
@@ -248,7 +246,7 @@ iptables-save > /etc/iptables/rules.v4
 Se presenta la tabla de pruebas.
 
 
-Todas funcionan excepto la número 4. Inspeccionando con `iptraf` hemos visto que el paquete llega a a debian1 y se envía al host. Sin embargo, este no lo devuelve (no se detecta el tráfico incluso con el firewall desactivado). Creemos que tiene algo que ver con la configuración del host que es un ordenador privado mac. Ver
+Todas funcionan excepto la número 4. Inspeccionando con `iptraf` hemos visto que el paquete llega a debian1 y se envía al host. Sin embargo, este no lo devuelve (no se detecta el tráfico incluso con el firewall desactivado). Creemos que tiene algo que ver con la configuración del host que es un ordenador privado MacBook. Ver:
 
 ![red](flujo.png)
 
@@ -264,7 +262,7 @@ Todas funcionan excepto la número 4. Inspeccionando con `iptraf` hemos visto qu
 
 ## Logs
 
-Hemos configurado los logs y hemos podido probar aquellos que no usasen forward, ya que hacemos drop de todo el input y por lo tanto, no se loggean los drops de forward, luego algunas pruebas no se ven reflejadas en los logs. Ponemos capturase de la primera, segunda. EL resto son forwads.
+Hemos configurado los logs y hemos podido probar aquellos que no usasen forward, ya que no estos no se loggean, por lo que algunas pruebas no se ven reflejadas en los logs. Ponemos capturas de la primera y segunda prueba.
 
 ![red](capt1.png)
 ![red](capt2.png)
