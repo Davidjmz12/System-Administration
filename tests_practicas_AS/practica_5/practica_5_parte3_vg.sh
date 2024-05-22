@@ -17,8 +17,7 @@ do
 
     device="/dev/${nGV}/${nVL}"
     # Mirar si existe el volumen lógico
-    # lvdisplay "/dev/${nGV}/${nVL}" ??
-    # lvscan | egrep '$nVL' ??
+    lvdisplay $device
     
     # Si existe
     if [ $? -eq 0 ]
