@@ -38,6 +38,19 @@ La configuración de red se puede ver en la siguiente imagen:
 
 ![red](network.png)
 
+| Máquinas |    Interfaces    |      IP      |
+|:--------:|:----------------:|:------------:|
+|          |    enp0s3-NAT    | 10.0.2.15/24 |
+| Debian 1 | enp0s8-host-only | 192.168.57.2 |
+|          |  enp0s9-internal | 192.168.58.1 |
+|          | enp0s10-internal | 192.168.59.1 |
+| Debian 2 |  enp0s3-internal | 192.168.58.2 |
+| Debian 3 |  enp0s3-internal |     dhcp     |
+| Debian 4 | enp0s3-internal  |     dhcp     |
+| Debian 5 | enp0s3-internal  | 192.168.60.5 |
+| Debian 6 | enp0s8-internal  | 192.168.60.6 |
+|          | enp0s3-internal  | 192.168.59.6 |
+
 Para especificar esta estructura de red vamos a modificar el fichero `/etc/network/interfaces` (se especificará más adelante cómo). 
 Tras modificar los ficheros `/etc/network/interfaces` de cada máquina, usamos el comando:
 ```bash
